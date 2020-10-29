@@ -1,34 +1,40 @@
-# v2rayT
- v2rayTerminal for linux terminal
- 
-                                                                                _______
-                                                ___   __   __                _/
-                              ___              | __| |_ | |_ | -----------  /
-                             |   |------------ |__ | | _| | _|             | freedom
-                             |CIL|             | __| |_ | |_ |             |     world
-                             |___|             |   |server|  |
+# v2rayTermianl
 
-                  [1] Subscription URL
-                  [2] About
-                  [3] Settings <Reset>
+                /_____/|
+               /_____/ |
+              /_____/  |
+             /_____/   |
+            /_____/    |
+           /     /     |
 
-                   Enter:
+	[1] -------------
+	[2] -------------
+	[3] -------------
+	[.] -------------
+	:
 
-## install v2rayT
+# Files Struct
+
+	/
+	| etc/
+	   | 
+	   | v2rayT/
+	      |
+	      | base.py
+	      | IMPORT.py
+	      | stable/
+	         |
+	         | patch_ffunc.py (link) --> beta_test/ ..
+	         | ..
+	      | beta_test/
+	         |
+	         | ..
+
+# Install v2rayT (Scrip)
  run <install.sh> or lmitate it
-
-# Update & Maintenance
-
-	_______ master stock
-	     \
-	      \
-	       \
-	      2020
-	    /  |   \
-	stable last test
-
+ 
 # Install v2ray-core
  <a href="https://www.v2ray.com/en/welcome/install.html">v2ray</a>
 
 # Reference
- Thanks for <a href="https://github.com/UncleBrook/v2rayT"> @UncleBrook</a> framework
+ Thanks for <a href="https://github.com/UncleBrook/v2rayT"> @UncleBrook</a>

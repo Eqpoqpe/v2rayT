@@ -1,0 +1,19 @@
+#!/bin/bash
+
+OBPATH="/etc/v2rayT"
+BASECORE="src/base_b.py"
+STABLEPATCH="stable"
+ALPHAPATCH="alpha"
+
+LOCAL=$PWD
+
+checkfile() {
+	if [ ! -e $1 ];
+	then 
+		printf "PATH\t$1\tNo Found\n"
+	fi
+}
+
+compile() {
+}
+checkfile ${OBPATH}
