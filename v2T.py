@@ -1,12 +1,5 @@
 #!/usr/bin/python3
 
-'''LOVE FREEDOM'''
-
-# -*- coding: UTF-8 -*-
-# (C) Copyright 2020 FINTF C
-
-'''v2rayT Version 2020'''
-
 import time
 import sys
 import os
@@ -17,13 +10,6 @@ import subprocess
 import re
 import webbrowser
 
-'''
----------------------------------------------------
-| PATHS ONLY FOR CHECKFILES                       |
-| IF YOU WANT TO CHANGE PATHS, IT'S BE EASZY NOW  |
-| YOU WELCOME                                     |
----------------------------------------------------
-'''
 USERPATH = os.path.expandvars("$HOME") + "/.config"
 PROGRAMCONFIG = USERPATH + "/v2rayTerminal"
 # CONFIGFILESPATH = os.path.expandvars("$HOME") + "/.v2rayTerminal"
@@ -32,11 +18,6 @@ SERVERNODECONFIG = PROGRAMCONFIG + "/v2rayTerminal.conf"
 SERVERNODECONFIG_B = PROGRAMCONFIG + "/v2rayTerminal.conf.backup"
 CONFIG = PROGRAMCONFIG + "/User"
 
-'''
--------------------------------
-| DON'T CHANGE PATH_SETS SORT |
--------------------------------
-'''
 PATH_SET = (USERPATH, PROGRAMCONFIG,\
      SUBSCRIPTIONPATH, SERVERNODECONFIG, SERVERNODECONFIG_B, CONFIG)
 
@@ -46,6 +27,11 @@ class _basic:
     	file_path : tuple
     ) -> "subscription_url":
         subscription_url = input("\nURL: ")
+        ''' path file '''
+        if (subscription_url == "path file"):
+            file_path = str(input("PATH: "))
+            with open(file_path, 'r') as original:
+                subscription_url = original.read()
         getfile = open(file_path[2], "w+")
         getfile.write(subscription_url)
         getfile.close()
@@ -107,11 +93,6 @@ class _basic:
             server_list[get] = server_node
         return server_list
 
-    '''
-    ---------------------------------------------------------------
-    |   SETCONFIGFILE STOPED NEW FEATURES UPDATE KEEP FIX BUGS    |
-    ---------------------------------------------------------------
-    '''
     def SetConfigFile(self, server_list):
         checked_node_id = int(input("SERVER NODE NUMBER\n\n: "))
         get_path = input("SEVA FILE PATH: /")
@@ -137,7 +118,6 @@ class _basic:
 
 class filesys:
     def checkfiles(self, path):
-        #------------------- basic files --------------------
         DEFUALT_USER = {"user_definition": [{"configuration_file_path": ""},{"proxy": [{"socks": {"listen": "","port": ""}},{"http": {"listen": "","port": ""}}]}]}
         settings = {"v2rayT": {"Settings": {"Logo": "on"},"Paremeter": {"SYS_1": 0,"SYS_1": 1}}}
         if not os.path.exists(path[1]):
@@ -151,7 +131,6 @@ class filesys:
             json.dump(settings, open(path[5] + "/settings.json", 'w'), indent=4)
         if not os.path.exists(path[5] + "defualt.json"):
         	json.dump(DEFUALT_USER, open(path[5] + "/defualt.json", 'w'), indent=4)
-        #----------------------------------------------------
         if os.path.exists(path[4]):
             SYS_PARTY_VALUE_0 = 1
         else:
@@ -197,11 +176,7 @@ class filesys:
             json.dump(CONFIG, open(path_short[5] + "/settings.json", "w"), indent=4)
 
 class user_panel(filesys, _basic):
-    '''
-    ------------------------------------------------
-    | STOP CHANGE PATHS NUMBER > INIT_RETURN_VALUE |
-    ------------------------------------------------
-    '''
+
     def __init__(self, INIT_STATUS_VALUE):
         subscription_url = INIT_STATUS_VALUE[3]
         while True:
@@ -332,9 +307,6 @@ class user_panel(filesys, _basic):
                 os.remove(server_node_config_path)
                 os.rename(server_node_config_backup, server_node_config_path)
                 print("Done!")
-
-    def user_defualt_setup():
-        pass
 
 if __name__ == "__main__":
     system_0 = filesys()

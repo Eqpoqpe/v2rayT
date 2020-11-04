@@ -10,11 +10,10 @@
 			"test_0",
 			"test_1",
 			"test_2"
-		}
+		]
 	},
-	"base_b": [
-	],
-	"rule": [
+	"base_b": false,
+	"exchange_rule": [
 		["test_1", "basic_0"],
 		["test_2", "basic_1"]
 	]

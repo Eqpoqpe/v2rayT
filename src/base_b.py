@@ -55,14 +55,15 @@ def _ropen_j(path, mode = 'r') -> dict:
 
 class _basic:
     def __init__(self, *paremeter):
-        func : list = []
-        func.append(self.__add_subscription_url_r)
-        func.append(self.__add_config)
-        func.append(self.__read_config)
-        func.append(self.__load_subscription_content)
-        func.append(self.__server_node)
-        func.append(self.__set_config_file)
-        
+        self.func_dict = {
+            "__add_subscription_url_r"    : self.__add_subscription_url_r,
+            "__add_config"                : self.__add_config,
+            "__read_config"               : self.__read_config,
+            "__load_subscription_content" : self.__load_subscription_content,
+            "__server_node"               : self.__server_node,
+            "__set_config_file"           : self.__set_config_file
+        }
+
     ''' call function
         in-build some function set for IMPORT
 
@@ -233,16 +234,14 @@ class _checkf:
                 else:    return (0)
 
 class _patch:
-    def __set_rule(self, _dict=_ropen_j(CALL_PATH)):
+    __CALL_CONFIG_PATH : str = "/home/ryan/v2rayT/call_config.json"
+    def __gset_rule(self, _dict=_ropen_j(__CALL_CONFIG_PATH)):
         rule_ob = {
-                "_patch_s" : _dict["patch_stable"],
-                "_patch_a"   : _dict["patch_alpha"],
-                "_base"         : _dict["base_b"],
-                "_rule"         : _dict["rule"]
+                "_patch_s" : _dict["exchange_rule"],
         }
         return rule_ob
 
-    def _call_m(rule=__set_rule()):
+    def _call_m(self):
         pass
 
 class _call_interface(_patch):
@@ -250,8 +249,22 @@ class _call_interface(_patch):
         _basic in-build functions list -> _call_interface
         _patch will read exchange call rule, return ex call functions list
     '''
-    import _basic, _patch
-    def __inti__(self):
+
+    def __inti__(interface):
         ''' copy ex call functions list '''
-        _funb = _basic().func
-        _funp = _patch().func
+        interface.__funb = _basic().func_dict
+        interface.__funr = _patch()._call_m()
+
+    def _runle(interface):
+        pass
+
+    def __vif(interface) -> int:
+        __defualt = len(interface.__funr)
+        __vif_val = 0
+        for get_key in interface.__funb:
+            for _get_key in interface.__funb[__defualt][1]:
+                if (get_key == _get_key):
+                    __vif_val += 1
+        if (__vif_val == __defualt):
+            return 0
+        else:   return -1

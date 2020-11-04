@@ -1,22 +1,22 @@
 # Copyright (C) 2020 FINTF
 # Written by Ryan William (eqpoqpe@gmail.com)
 
-''' /etc/
-       v2rayT/
-         stable/..
-         alpha/..
-         IMPORT.py
-         base.py
-         demo_cli.py
+''' base_b.func and patch.func > IMPORT.interface > damo_cil
+    IMPORT > call way interface for damo_cil
+
+    add subscription
+    re subscription
+    continue config node file & back_config node file
 '''
 
+def erron(paremeter=[]) -> int:
+    if (len(paremeter) == 0):
+        print("paremeter is null")
+        return 0
+    else:   return -1
+
 try:
-    from src.base_b import module
-    if bool(module):
-        from base_b import _basic, _checkf
-        from stable.patch_stable import *
-    func_b.append(_basic)
-    func_b.append(_checkf)
-    # func_p.append()
-except:
-    print(0)
+    from base_b import _call_interface
+    ''' call way '''
+except ModuleNotFoundError:
+    pass
