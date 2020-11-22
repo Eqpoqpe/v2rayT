@@ -1,1 +1,0 @@
-/home/ryan/v2rayT/alpha/pconf.py

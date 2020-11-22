@@ -1,20 +1,28 @@
 # -*- coding: UTF-8 -*-
-# (C) Copyright 2020 FINTF C
+# (C) Copyright 2020 FINTF
 # Written by Ryan William (eqpoqpe@gmail.com)
 
-import subprocess
-import re
+try:
+    from _peapods import _sepods, _sepatch
+    from _checkf import _checkf
+    from alpha._interface import func_dict
+    import subprocess
+    import re
+    import os
+    import json
+    import base64
+except ModuleNotFoundError:
+    print("Module Not Found")
+    exit()
 
 module : bool = True
-
-import os
 __USERPATH = os.path.expandvars("$HOME") + "/.config"
-__PROGRAMCONFIG = __USERPATH + "/v2rayTerminal"
+__PROGRAMCONFIG = __USERPATH + "/v2T"
 __CONFIG = __PROGRAMCONFIG + "/User"
 __PATCH = __PROGRAMCONFIG + "/patch"
-__SUBSCRIPTIONPATH = __PROGRAMCONFIG + "/v2rayTerminal.sub"
-__SERVERNODECONFIG = __PROGRAMCONFIG + "/v2rayTerminal.conf"
-__SERVERNODECONFIG_B = __PROGRAMCONFIG + "/v2rayTerminal.conf.backup"
+__SUBSCRIPTIONPATH = __PROGRAMCONFIG + "/sub.conf"
+__SERVERNODECONFIG = __PROGRAMCONFIG + "/nodelist.conf"
+__SERVERNODECONFIG_B = __PROGRAMCONFIG + "/nodelist.conf.bak"
 
 _PATH_SET : tuple 
 _PATH_SET = (
@@ -42,7 +50,6 @@ def _rwopen(path, mode ='r', wri_str : str = None) -> str or bool:
 '''
 def _ropen_j(path, mode = 'r') -> dict:
     try:
-        import json
         with open(path, 'r') as original:
             str_j = json.load(str_j)
             original.close()
@@ -110,7 +117,6 @@ class _basic:
             else:   return (1)
 
     def __add_config(self, content : str, file_path=_PATH_SET) -> str:
-        import base64
         config = str(base64.urlsafe_b64decode(content), encoding="utf-8")
         getfile = open(file_path[3], "w+")
         getfile.write(config)
@@ -164,10 +170,10 @@ class _basic:
     def __set_config_file(self, server_list : list, node_number : int, save_path) -> None:
         config_file = "/" + save_path
         NODE_CONFIG_KEYWORDS = {
-                "add" : "",
-                "port": "",
-                "aid" : "",
-                "id"  : ""
+                "add" : None,
+                "port": None,
+                "aid" : None,
+                "id"  : None
         }
         try:
             for get_key in NODE_CONFIG_FILE_KEYWORDS:
@@ -177,7 +183,6 @@ class _basic:
                 NODE_CONFIG_KEYWORDS[get_key] = server_list[checked_node_id][get_key]
         except KeyError:
             exit()
-        ''' /usr/~/.config/v2rayTerminal/config.json '''
         tmp_config = _ropen_j(path_set)
         set_header = tmp_config["outbounds"]["settings"]["vnext"][0]
         set_header["address"] = NODE_CONFIG_KEYWORDS["port"]
@@ -187,84 +192,37 @@ class _basic:
         json.dump(tmp_config, open(config_file + "/config.json", "w"), indent=2)
         exit()
 
-class _checkf:
-    def _chf_mk(self, path_set=_PATH_SET, DEFUALT : str="SET", *FF_LS) -> None:
-        if (type(path_set) == tuple):
-            if (DEFUALT == "SET"):
-                if (len(FF_LS) == 2):
-                    for get_tmp_path in path_set[0:FF_LS[0]]:
-                        os.mkdir(get_tmp_path, mode=0o777)
-                    for get_tmp_path in path_set[FF_LS[1]:]:
-                        open(get_tmp_path, "w+")
-                else:
-                    # FF_LS.Lenght not full
-                    pass
-            elif (DEFUALT == "folder"):
-                for get_tmp_path in path_set:
-                    os.mkdir(get_tmp_path, mode=0o777)
-            elif (DEFUALT == "file"):
-                for get_tmp_path in path_set:
-                    open(get_tmp_path, "w+")
-        elif (type(path_set) == str):
-            if (DEFUALT == "SET"):
-                # option error
-                exit()
-            elif (DEFUALT == "folder"):
-                os.mkdir(path_set, mode=0o777)
-            elif (DEFUALT == "file"):
-                open(path_set, "w+")
-
-    def _chf_exis(self, path, path_set=_PATH_SET, paremeter : str=None) -> list or int:
-        if (path_set != __PATH_SET):
-            if (os.exists(path)):   return (0)
-            else:   return (1)
-        elif (path_set == __PATH_SET):
-            no_exs : list = []
-            for get_tmp_path in path_set:
-                if (not os.exists(get_tmp_path)):
-                    no_exs.append(get_tmp_path)
-                continue
-            if (paremeter == 'l'):
-                if (len(no_exs) != 0):
-                    return (no_exs)
-                else:   return (0)
-            else:
-                if (len(no_exs) != 0):
-                    return (1)
-                else:    return (0)
-
 class _patch:
-    __CALL_CONFIG_PATH : str = "/home/ryan/v2rayT/call_config.json"
-    def __gset_rule(self, _dict=_ropen_j(__CALL_CONFIG_PATH)):
-        rule_ob = {
-                "_patch_s" : _dict["exchange_rule"],
-        }
-        return rule_ob
+    try:
+        _CALL_PATCH_CONFIG = _PATH_SET[1] + "/parule.json"
+    except FileNotFoundError:
+        print("File Not Found: " + _CALL_PATCH_CONFIG)
+        exit()
 
-    def _call_m(self):
-        pass
+    def grule(self):
+        # patch rule include replace sort
+        rule_dict = _ropen_j(_CALL_PATCH_CONFIG)
+        if (rule_dict["patch"]["status"]):
+            msort     = rule_dict["patch"]["patch_msort"]
+            func_info = rule_dict["patch"]["info"]
+        else:   msort = False
+        return (msort, func_info)
 
-class _call_interface(_patch):
-    ''' _patch call outside functions list -> _call_interface
-        _basic in-build functions list -> _call_interface
-        _patch will read exchange call rule, return ex call functions list
-    '''
+    def _sort(self, rule=grule()[0]):
+        func = []
+        if (rule[0]):
+            for lo_str in rule[0]:
+                if (lo_str in func_dict["stable"]):
+                    func.append(func_dict[lo_str])
+                else:   func.append(None)
+            return func
+        return func
 
-    def __inti__(interface):
-        ''' copy ex call functions list '''
-        interface.__funb = _basic().func_dict
-        interface.__funr = _patch()._call_m()
+class _call_interface(_patch, _basic, _checkf):
+    def __init__(self):
+        self.cpy_func = self.func_dict
+        self.rfunc = _sepods(cpy_func, 2)
+        self.rfunc[len(self.rfunc) - 1] = _patch()._sort()
 
-    def _runle(interface):
-        pass
-
-    def __vif(interface) -> int:
-        __defualt = len(interface.__funr)
-        __vif_val = 0
-        for get_key in interface.__funb:
-            for _get_key in interface.__funb[__defualt][1]:
-                if (get_key == _get_key):
-                    __vif_val += 1
-        if (__vif_val == __defualt):
-            return 0
-        else:   return -1
+    def gfunc(self):
+        return _sepatch(self.rfunc)

@@ -1,8 +1,7 @@
-def test_0():
-    pass
+def test1():   print("test1")
 
-def test_1():
-    pass
+def test2():    print("test2")
 
-def test_2():
-    pass
+def test3():   print("test3")
+
+def test(): print("test main")
